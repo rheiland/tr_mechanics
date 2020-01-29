@@ -100,8 +100,8 @@
 		<folder>.</folder> <!-- use . for root --> 
 
 		<full_data>
-			<interval units="min">360</interval>
-			<enable>true</enable>
+			<interval units="min">0.1</interval>
+			<enable>false</enable>
 		</full_data>
 		
 		<SVG>

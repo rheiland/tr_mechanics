@@ -74,7 +74,7 @@ class SubstrateTab(object):
         # self.x_range = 2000.
         # self.y_range = 2000.
 
-        self.show_nucleus = False
+        self.show_nucleus = True
         self.show_edge = True
 
         # initial value
@@ -148,7 +148,7 @@ class SubstrateTab(object):
 
         self.cmap_fixed_toggle = Checkbox(
             description='Fix',
-            disabled=False,
+            disabled=True,
 #           layout=Layout(width=constWidth2),
         )
         self.cmap_fixed_toggle.observe(self.mcds_field_cb)
@@ -304,8 +304,8 @@ class SubstrateTab(object):
         #---------------------
         self.substrates_toggle = Checkbox(
             description='Substrates',
-            disabled=False,
-            value=True,
+            disabled=True,
+            value=False,
 #           layout=Layout(width=constWidth2),
         )
         def substrates_toggle_cb(b):
@@ -523,8 +523,10 @@ class SubstrateTab(object):
             if full_xml_filename.is_file():
                 tree = ET.parse(full_xml_filename)  # this file cannot be overwritten; part of tool distro
                 xml_root = tree.getroot()
-                self.svg_delta_t = int(xml_root.find(".//SVG//interval").text)
-                self.substrate_delta_t = int(xml_root.find(".//full_data//interval").text)
+                # self.svg_delta_t = int(xml_root.find(".//SVG//interval").text)
+                self.svg_delta_t = float(xml_root.find(".//SVG//interval").text)
+                # self.substrate_delta_t = int(xml_root.find(".//full_data//interval").text)
+                self.substrate_delta_t = float(xml_root.find(".//full_data//interval").text)
                 # print("substrates: svg,substrate delta_t values=",self.svg_delta_t,self.substrate_delta_t)        
                 self.modulo = int(self.substrate_delta_t / self.svg_delta_t)
                 # print("substrates: update(): modulo=",self.modulo)        
@@ -755,6 +757,8 @@ class SubstrateTab(object):
         for child in cells_parent:
             #    print(child.tag, child.attrib)
             #    print('attrib=',child.attrib)
+            # !!!!!!! NOTE: for this app, we have 3 circles, not just 2 !!!!!!!
+            first_circle_unique = True
             for circle in child:  # two circles in each child: outer + nucleus
                 #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
                 #      print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
@@ -767,7 +771,10 @@ class SubstrateTab(object):
                 s = circle.attrib['fill']
                 # print("s=",s)
                 # print("type(s)=",type(s))
-                if (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
+                if (s[0:4] == "rgba"):  # if an rgba string, e.g. "rgba(0,0,1,0.1)" 
+                    rgb = list(map(float, s[5:-1].split(",")))  
+                    rgb[:] = [x for x in rgb]
+                elif (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
                     rgb = list(map(int, s[4:-1].split(",")))  
                     rgb[:] = [x / 255. for x in rgb]
                 else:     # otherwise, must be a color name
