@@ -166,9 +166,22 @@ void create_cell_types( void )
 	CellA.phenotype.mechanics.cell_cell_adhesion_strength=parameters.doubles( "cell_cell_adhesion_strength_strength" );
 	CellA.phenotype.mechanics.cell_cell_repulsion_strength=parameters.doubles( "cell_cell_repulsion_strength" );
 	CellA.phenotype.mechanics.relative_maximum_adhesion_distance=parameters.doubles( "relative_maximum_adhesion_distance" );
-	
-
-	
+	if (parameters.bools("use_function_to_set_relative_maximum_adhesion_distance") == true)
+	{
+			double value=parameters.doubles("set_relative_maximum_adhesion_distance");
+			CellA.phenotype.mechanics.set_relative_maximum_adhesion_distance(value);
+	}
+	if (parameters.bools("use_function_to_set_relative_equilibrium_distance") == true)
+	{	
+		double value=parameters.doubles("set_relative_equilibrium_distance");
+		CellA.phenotype.mechanics.set_relative_equilibrium_distance( value);
+			
+	}
+	if (parameters.bools("use_function_to_set_absolute_equilibrium_distance")== true)
+	{
+			double value=parameters.doubles("set_absolute_equilibrium_distance");
+			CellA.phenotype.mechanics.set_absolute_equilibrium_distance(CellA.phenotype, value);
+	}
 	
 	// Set cell-cell adhesion to 5% of other cells 
 	//CellA.phenotype.mechanics.cell_cell_adhesion_strength *= parameters.doubles( "CellA_relative_adhesion" ); // 0.05; 
@@ -269,7 +282,9 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 	if( pCell->phenotype.death.dead == false && pCell->type == 1 )
 	{
 		 output[0] = "blue"; 
-		 output[2] = "blue"; 
+		 output[1] = "blue";
+		 output[2] = "blue";
+		 output[3] = "blue"; 
 	}
 	
 	return output; 

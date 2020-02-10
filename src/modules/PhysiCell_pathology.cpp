@@ -500,7 +500,9 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 			double r = pC->phenotype.geometry.radius ; 
 			double rn = pC->phenotype.geometry.nuclear_radius ; 
 			double z = fabs( (pC->position)[2] - z_slice) ; 
-			
+			double d=pC->phenotype.mechanics.relative_maximum_adhesion_distance;
+			double A=pC->phenotype.mechanics.cell_cell_adhesion_strength;
+			double R=pC->phenotype.mechanics.cell_cell_repulsion_strength;
 			double mechanics_r=(pC->phenotype.mechanics.relative_maximum_adhesion_distance) * r;
 			
 			Colors = cell_coloring_function( pC ); 
@@ -510,15 +512,20 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 			// figure out how much of the cell intersects with z = 0 
    
 			double plot_radius = sqrt( r*r - z*z ); 
-
+			double cell_spacing = (1 - sqrt(A/R));
+			cell_spacing /= (0.5 * 1/r - 0.5 * sqrt(A/R)/(d * r));
+			double equi_radius= (d*r *(1-(sqrt(A/R))))/(0.5*(d-(sqrt(A/R))));
+			equi_radius=0.5*cell_spacing;
+			//std::cout<<equi_radius;
 			
 			Write_SVG_circle( os, (pC->position)[0]-X_lower, (pC->position)[1]-Y_lower, 
 				mechanics_r, 0.5, "rgba(0,0,1,0.1)", "rgba(0,0,1,0.1)" );
 				
-			Write_SVG_circle( os, (pC->position)[0]-X_lower, (pC->position)[1]-Y_lower, 
-				plot_radius , 0.5, Colors[1], Colors[0] ); 
+		Write_SVG_circle( os, (pC->position)[0]-X_lower, (pC->position)[1]-Y_lower, 
+			plot_radius , 0.5, Colors[1], Colors[0] ); 
 			
-
+			Write_SVG_circle( os, (pC->position)[0]-X_lower, (pC->position)[1]-Y_lower, 
+				equi_radius , 0.5, "red", "rgba(1,0,0,0.0)" ); 
 			
 
 			// plot the nucleus if it, too intersects z = 0;
@@ -532,6 +539,46 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 		}
 	}
 	os << "  </g>" << std::endl; 
+	///*****ploting equillibrium*********
+	
+	os << "  <g id=\"cells\">" << std::endl; 
+	for( int i=0 ; i < total_cell_count ; i++ )
+	{
+		Cell* pC = (*all_cells)[i]; // global_cell_list[i]; 
+  
+		
+			double r = pC->phenotype.geometry.radius ; 
+		
+			
+			double d=pC->phenotype.mechanics.relative_maximum_adhesion_distance;
+			double A=pC->phenotype.mechanics.cell_cell_adhesion_strength;
+			double R=pC->phenotype.mechanics.cell_cell_repulsion_strength;
+			
+			
+			
+  
+			// figure out how much of the cell intersects with z = 0 
+   
+			//double plot_radius = sqrt( r*r - z*z ); 
+			double cell_spacing = (1 - sqrt(A/R));
+			cell_spacing /= (0.5 * 1/r - 0.5 * sqrt(A/R)/(d * r));
+			//double equi_radius= (d*r *(1-(sqrt(A/R))))/(0.5*(d-(sqrt(A/R))));
+			double equi_radius=0.5*cell_spacing;
+		
+			
+			Write_SVG_circle( os, (pC->position)[0]-X_lower, (pC->position)[1]-Y_lower, 
+				equi_radius , 0.5, "red", "rgba(1,0,0,0.0)" ); 
+			
+					  
+			
+		
+	}
+	
+	
+	
+	
+	////******************
+	
 	
 	// plot intersecting BM points
 	/* 
