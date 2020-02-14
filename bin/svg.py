@@ -272,107 +272,60 @@ class SVGTab(object):
 
         # print('------ search tissue')
         cells_parent = None
-		adhDists = None
+
         for child in tissue_parent:
             # print('attrib=',child.attrib)
             if (child.attrib['id'] == 'cells'):
-                print('-------- found cells, setting cells_parent')
+                # print('-------- found cells, setting cells_parent')
                 cells_parent = child
                 break
-			if (child.attrib['id'] == 'adhDist'):
-				print('-------- found adhDists, setting cells_parent')
-				adhDists = child
-				break
             numChildren += 1
 
         num_cells = 0
-        # #  print('------ search cells')
-        # for child in cells_parent:
-               # print(child.tag, child.attrib)
-               # print('attrib=',child.attrib)
-            # for circle in child:  # two circles in each child: outer + nucleus
-                # #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
-                     # print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
-                # xval = float(circle.attrib['cx'])
+        #  print('------ search cells')
+        for child in cells_parent:
+            #    print(child.tag, child.attrib)
+            #    print('attrib=',child.attrib)
+            for circle in child:  # two circles in each child: outer + nucleus
+                #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
+                #      print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
+                xval = float(circle.attrib['cx'])
 
-                # s = circle.attrib['fill']
-                # # print("s=",s)
-                # # print("type(s)=",type(s))
-                # if (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
-                    # rgb = list(map(int, s[4:-1].split(",")))  
-                    # rgb[:] = [x / 255. for x in rgb]
-                # else:     # otherwise, must be a color name
-                    # rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
-                    # rgb = [x for x in rgb_tuple]
+                s = circle.attrib['fill']
+                # print("s=",s)
+                # print("type(s)=",type(s))
+                if (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
+                    rgb = list(map(int, s[4:-1].split(",")))  
+                    rgb[:] = [x / 255. for x in rgb]
+                else:     # otherwise, must be a color name
+                    rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
+                    rgb = [x for x in rgb_tuple]
 
-                # # test for bogus x,y locations (rwh TODO: use max of domain?)
-                # too_large_val = 10000.
-                # if (np.fabs(xval) > too_large_val):
-                    # print("bogus xval=", xval)
-                    # break
-                # yval = float(circle.attrib['cy'])
-                # if (np.fabs(yval) > too_large_val):
-                    # print("bogus xval=", xval)
-                    # break
+                # test for bogus x,y locations (rwh TODO: use max of domain?)
+                too_large_val = 10000.
+                if (np.fabs(xval) > too_large_val):
+                    print("bogus xval=", xval)
+                    break
+                yval = float(circle.attrib['cy'])
+                if (np.fabs(yval) > too_large_val):
+                    print("bogus xval=", xval)
+                    break
 
-                # rval = float(circle.attrib['r'])
-                # # if (rgb[0] > rgb[1]):
-                # #     print(num_cells,rgb, rval)
-                # xlist.append(xval)
-                # ylist.append(yval)
-                # rlist.append(rval)
-                # rgb_list.append(rgb)
+                rval = float(circle.attrib['r'])
+                # if (rgb[0] > rgb[1]):
+                #     print(num_cells,rgb, rval)
+                xlist.append(xval)
+                ylist.append(yval)
+                rlist.append(rval)
+                rgb_list.append(rgb)
 
-                # # For .svg files with cells that *have* a nucleus, there will be a 2nd
-                # if (self.show_nucleus == 0):
-                # #if (not self.show_nucleus):
-                    # break
-            # num_cells += 1
+                # For .svg files with cells that *have* a nucleus, there will be a 2nd
+                if (self.show_nucleus == 0):
+                #if (not self.show_nucleus):
+                    break
 
+            num_cells += 1
 
-		# for distance in adhDists:
-            # #    print(child.tag, child.attrib)
-            # #    print('attrib=',child.attrib)
-            # for circle in distance:  # two circles in each child: outer + nucleus
-                # #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
-                # #      print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
-                # xval = float(circle.attrib['cx'])
-
-                # s = circle.attrib['fill']
-                # # print("s=",s)
-                # # print("type(s)=",type(s))
-                # if (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
-                    # rgb = list(map(int, s[4:-1].split(",")))  
-                    # rgb[:] = [x / 255. for x in rgb]
-                # else:     # otherwise, must be a color name
-                    # rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
-                    # rgb = [x for x in rgb_tuple]
-
-                # # test for bogus x,y locations (rwh TODO: use max of domain?)
-                # too_large_val = 10000.
-                # if (np.fabs(xval) > too_large_val):
-                    # print("bogus xval=", xval)
-                    # break
-                # yval = float(circle.attrib['cy'])
-                # if (np.fabs(yval) > too_large_val):
-                    # print("bogus xval=", xval)
-                    # break
-
-                # rval = float(circle.attrib['r'])
-                # # if (rgb[0] > rgb[1]):
-                # #     print(num_cells,rgb, rval)
-                # xlist.append(xval)
-                # ylist.append(yval)
-                # rlist.append(rval)
-                # rgb_list.append(rgb)
-
-                # # For .svg files with cells that *have* a nucleus, there will be a 2nd
-                # if (self.show_nucleus == 0):
-                # #if (not self.show_nucleus):
-                    # break
-
-
-	
             # if num_cells > 3:   # for debugging
             #   print(fname,':  num_cells= ',num_cells," --- debug exit.")
             #   sys.exit(1)
@@ -391,7 +344,7 @@ class SVGTab(object):
         # rwh - is this where I change size of render window?? (YES - yipeee!)
         #   plt.figure(figsize=(6, 6))
         #   plt.cla()
-        title_str += " (" + str(num_cells) + " TEEEEEEEEEEEEEEEEEssssssssttt agents)"
+        title_str += " (" + str(num_cells) + " agents)"
         #   plt.title(title_str)
         #   plt.xlim(axes_min,axes_max)
         #   plt.ylim(axes_min,axes_max)

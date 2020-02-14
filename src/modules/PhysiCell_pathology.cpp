@@ -444,7 +444,6 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
   Vector position; 
   *position(2) = z_slice; 
   
-
   // 25*pi* 5 microns^2 * length (in source) / voxelsize^3
   
   for( int j=0; j < ratio*ECM.TellCols() ; j++ )
@@ -461,7 +460,6 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 	double BV = normalizer * evaluate_Matrix3( OxygenSourceHD, X_environment , Y_environment, Z_environment , position );
 	if( isnan( BV ) )
 	{ BV = 0.0; }
-
 	vector<string> Colors;
 	Colors = hematoxylin_and_eosin_stroma_coloring( E , BV );
 	Write_SVG_rect( os , *position(0)-half_voxel_size-X_lower , *position(1)-half_voxel_size+top_margin-Y_lower, 
@@ -478,7 +476,6 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 
 	/*
 	 std::vector<std::string> VesselColors = hematoxylin_and_eosin_stroma_coloring( 0,1 );
-
 	 os << " <g id=\"BloodVessels\">" << endl; 
 	 extern vector<BloodVesselSegment*> BloodVesselSegments; 
 	 Vector Offset; 
@@ -541,7 +538,7 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 	os << "  </g>" << std::endl; 
 	///*****ploting equillibrium*********
 	
-	os << "   <g id=\"adhDist\">" << std::endl; 
+	os << "   <g id=\"equilDist\">" << std::endl; 
 	for( int i=0 ; i < total_cell_count ; i++ )
 	{
 		Cell* pC = (*all_cells)[i]; // global_cell_list[i]; 
@@ -593,7 +590,6 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 		 string bm_color ( "rgb(0,0,0)" );
 		 double r = thickness/2.0; 
 		 double z = fabs( *(pBMN->Position)(2) - z_slice) ; 
-
 		 os << " <g id=\"BMN" << pBMN->ID << "\">" << std::endl; 
 		 Write_SVG_circle( os,*(pBMN->Position)(0)-X_lower, *(pBMN->Position)(1)+top_margin-Y_lower, 10*thickness/2.0 , 0.5 , bm_color , bm_color ); 
 		 os << " </g>" << std::endl;
