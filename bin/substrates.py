@@ -742,78 +742,121 @@ class SubstrateTab(object):
                 break
 
         # print('------ search tissue')
-        cells_parent = None
+        cells_parent = None; Distances = None
 
         for child in tissue_parent:
-            # print('attrib=',child.attrib)
+            #print('attrib=',child.attrib)
             if (child.attrib['id'] == 'cells'):
-                # print('-------- found cells, setting cells_parent')
+                #print('-------- found cells, setting cells_parent')
                 cells_parent = child
                 break
             numChildren += 1
 
+        for child in tissue_parent:
+            #print('attrib=',child.attrib)
+            if (child.attrib['id'] == 'adhDist'):
+                #print('-------- found cells, setting cells_parent')
+                Distances = child
+                break
+            numChildren += 1
+
+
         num_cells = 0
         #  print('------ search cells')
-        for child in cells_parent:
-            #    print(child.tag, child.attrib)
-            #    print('attrib=',child.attrib)
-            # !!!!!!! NOTE: for this app, we have 3 circles, not just 2 !!!!!!!
-            first_circle_unique = True
-            for circle in child:  # two circles in each child: outer + nucleus
-                #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
-                #      print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
-                xval = float(circle.attrib['cx'])
+##########################################
+        # for child in cells_parent:
+            # #    print(child.tag, child.attrib)
+            # #    print('attrib=',child.attrib)
+            # # !!!!!!! NOTE: for this app, we have 3 circles, not just 2 !!!!!!!
+            # first_circle_unique = True
+            # for circle in child:  # two circles in each child: outer + nucleus
+                # #  circle.attrib={'cx': '1085.59','cy': '1225.24','fill': 'rgb(159,159,96)','r': '6.67717','stroke': 'rgb(159,159,96)','stroke-width': '0.5'}
+                # #      print('  --- cx,cy=',circle.attrib['cx'],circle.attrib['cy'])
+                # xval = float(circle.attrib['cx'])
 
-                # map SVG coords into comp domain
-                # xval = (xval-self.svg_xmin)/self.svg_xrange * self.x_range + self.xmin
-                xval = xval/self.x_range * self.x_range + self.xmin
+                # # map SVG coords into comp domain
+                # # xval = (xval-self.svg_xmin)/self.svg_xrange * self.x_range + self.xmin
+                # xval = xval/self.x_range * self.x_range + self.xmin
 
-                s = circle.attrib['fill']
-                # print("s=",s)
-                # print("type(s)=",type(s))
-                if (s[0:4] == "rgba"):  # if an rgba string, e.g. "rgba(0,0,1,0.1)" 
-                    rgb = list(map(float, s[5:-1].split(",")))  
-                    rgb[:] = [x for x in rgb]
-                elif (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
-                    rgb = list(map(int, s[4:-1].split(",")))  
-                    rgb[:] = [x / 255. for x in rgb]
-                else:     # otherwise, must be a color name
-                    rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
-                    rgb = [x for x in rgb_tuple]
+                # s = circle.attrib['fill']
+                # # print("s=",s)
+                # # print("type(s)=",type(s))
+                # if (s[0:4] == "rgba"):  # if an rgba string, e.g. "rgba(0,0,1,0.1)" 
+                    # rgb = list(map(float, s[5:-1].split(",")))  
+                    # rgb[:] = [x for x in rgb]
+                # elif (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
+                    # rgb = list(map(int, s[4:-1].split(",")))  
+                    # rgb[:] = [x / 255. for x in rgb]
+                # else:     # otherwise, must be a color name
+                    # rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
+                    # rgb = [x for x in rgb_tuple]
 
-                # test for bogus x,y locations (rwh TODO: use max of domain?)
-                too_large_val = 10000.
-                if (np.fabs(xval) > too_large_val):
-                    print("bogus xval=", xval)
-                    break
-                yval = float(circle.attrib['cy'])
-                # yval = (yval - self.svg_xmin)/self.svg_xrange * self.y_range + self.ymin
-                yval = yval/self.y_range * self.y_range + self.ymin
-                if (np.fabs(yval) > too_large_val):
-                    print("bogus xval=", xval)
-                    break
+                # # test for bogus x,y locations (rwh TODO: use max of domain?)
+                # too_large_val = 10000.
+                # if (np.fabs(xval) > too_large_val):
+                    # print("bogus xval=", xval)
+                    # break
+                # yval = float(circle.attrib['cy'])
+                # # yval = (yval - self.svg_xmin)/self.svg_xrange * self.y_range + self.ymin
+                # yval = yval/self.y_range * self.y_range + self.ymin
+                # if (np.fabs(yval) > too_large_val):
+                    # print("bogus xval=", xval)
+                    # break
 
-                rval = float(circle.attrib['r'])
-                # if (rgb[0] > rgb[1]):
-                #     print(num_cells,rgb, rval)
-                xlist.append(xval)
-                ylist.append(yval)
-                rlist.append(rval)
-                rgb_list.append(rgb)
+                # rval = float(circle.attrib['r'])
+                # # if (rgb[0] > rgb[1]):
+                # #     print(num_cells,rgb, rval)
+                # xlist.append(xval)
+                # ylist.append(yval)
+                # rlist.append(rval)
+                # rgb_list.append(rgb)
 
-                # For .svg files with cells that *have* a nucleus, there will be a 2nd
-                if (not self.show_nucleus):
-                #if (not self.show_nucleus):
-                    break
+                # # For .svg files with cells that *have* a nucleus, there will be a 2nd
+                # if (not self.show_nucleus):
+                # #if (not self.show_nucleus):
+                    # break
 
-            num_cells += 1
+            # num_cells += 1
 
-            # if num_cells > 3:   # for debugging
-            #   print(fname,':  num_cells= ',num_cells," --- debug exit.")
-            #   sys.exit(1)
-            #   break
+#####################################
 
-            # print(fname,':  num_cells= ',num_cells)
+
+        for distance in Distances:
+            print(distance.attrib)
+            first_circle_unique = True;
+            xval = float(distance.attrib['cx']);
+            xval = xval/self.x_range * self.x_range + self.xmin
+            s = distance.attrib['fill'];
+            if (s[0:4] == "rgba"):  # if an rgba string, e.g. "rgba(0,0,1,0.1)" 
+                rgb = list(map(float, s[5:-1].split(",")))
+                rgb[:] = [x for x in rgb]
+            elif (s[0:3] == "rgb"):  # if an rgb string, e.g. "rgb(175,175,80)" 
+                rgb = list(map(int, s[4:-1].split(",")))
+                rgb[:] = [x / 255. for x in rgb]
+            else:
+                rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
+                rgb = [x for x in rgb_tuple]
+        
+			# # test for bogus x,y locations (rwh TODO: use max of domain?)
+			# too_large_val = 10000.
+			# if (np.fabs(xval) > too_large_val):
+				# print("bogus xval=", xval)
+				# break
+            yval = float(distance.attrib['cy'])
+            yval = (yval - self.svg_xmin)/self.svg_xrange * self.y_range + self.ymin
+            yval = yval/self.y_range * self.y_range + self.ymin
+            rval = float(distance.attrib['r'])
+            if (rgb[0] > rgb[1]):
+                print(num_cells,rgb, rval)
+            xlist.append(xval)
+            #print(xval)
+            ylist.append(yval)
+            #print(yval)
+            rlist.append(rval)
+            #print(rval)
+            rgb_list.append(rgb)
+            
+
 
         xvals = np.array(xlist)
         yvals = np.array(ylist)

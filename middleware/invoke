@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/usr/bin/invoke_app "$@" -C "start_jupyter -A -T @tool tr_mechanics.ipynb" -t trmechanics -u anaconda3-5.1
+/usr/bin/invoke_app "$@" -C "start_jupyter -A -T @tool tr_mechanics.ipynb" -t tr_mechanics -u anaconda3-5.1

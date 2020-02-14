@@ -541,7 +541,7 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 	os << "  </g>" << std::endl; 
 	///*****ploting equillibrium*********
 	
-	os << "  <g id=\"cells\">" << std::endl; 
+	os << "   <g id=\"adhDist\">" << std::endl; 
 	for( int i=0 ; i < total_cell_count ; i++ )
 	{
 		Cell* pC = (*all_cells)[i]; // global_cell_list[i]; 
@@ -604,7 +604,7 @@ void SVG_plot( std::string filename , Microenvironment& M, double z_slice , doub
 	
 	// end of the <g ID="tissue">
 	os << " </g>" << std::endl; 
- 
+ 	os << "</g>" << std::endl; 
 	// draw a scale bar
  
 	double bar_margin = 0.025 * plot_height; 
