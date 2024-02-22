@@ -44,7 +44,7 @@ This app demonstrates &quot;Mechanics&quot; concept in PhysiCell.
 <p>
 Cell mechanics (cell movements in time) in Physicell are produced through interactions among cells (cell-cell interactions)and basement membrane (if present).  The impact of other cells and the BM (basement membrane) on the cell of interest isbest expressed through adhesion and repulsion.  The mechanics of adhesion and repulsion can be complicated, but they aremodeled by the equation below.Adhesionis a cell’s tendency to "stick" to things, whilerepulsionis a cell’s tendency tobe pushed away.  The range and combination of these forces ultimately creates a sweet spot for a cell at a certain distanceaway from its neighbors where it tends to rest, similar to the Leonard-Jones potential in atomic and particle Physics.The main equation in mechanics that we will be referencing is:</p>
 
-<img src="mechanics_equation.png">
+<img src="doc/mechanics_equation.png">
 
 <p>
 Where vi and xi are  the  velocity  and  position  of  the  cell  in  question. xj is  the  position  of  another  cell  in  the  first  cellsneighborhood (this is what is meant by j is N(i)). Ccca represents the cell to cell adhesion (Cca) coefficient on theithcell.  This is NOT raised to power i or j.  The other C constants are represented similarly and described in the Members/Parameters section.  When the summation for all the cell components is said and done, then repulsion and adhesion are considered withthe basement matrix, and finally these correctional terms to the cell's velocity are added to its original velocity.
