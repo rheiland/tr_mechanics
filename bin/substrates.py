@@ -858,9 +858,6 @@ class SubstrateTab(object):
         yvals = np.array(ylist)
         rvals = np.array(rlist)
         rgbs = np.array(rgb_list)
-
-
-
         self.title_str += " (" + str(num_cells) + " agents)"
             # title_str = " (" + str(num_cells) + " agents)"
         # else:
@@ -868,6 +865,16 @@ class SubstrateTab(object):
             # hrs = int(mins/60)
             # days = int(hrs/24)
             # title_str = '%dd, %dh, %dm' % (int(days),(hrs%24), mins - (hrs*60))
+            
+        fname = "output%08d_microenvironment0.mat" % self.substrate_frame
+        full_fname = os.path.join(self.output_dir, fname)
+        if True:            
+            x1 = -60
+            x2 = -20
+            y1 = -40
+            y2 = -40
+            plt.plot([x1,x2],[y1,y2], 'k', linewidth = 5)
+            plt.text(-45, -37, u"40 \u03bcm")
         plt.title(self.title_str)
 
         plt.xlim(self.xmin, self.xmax)
@@ -912,6 +919,7 @@ class SubstrateTab(object):
         else:
             # plt.scatter(xvals,yvals, s=markers_size, c=rgbs)
             self.circles(xvals,yvals, s=rvals, color=rgbs)
+
 
         # if (self.show_tracks):
         #     for key in self.trackd.keys():
@@ -1085,6 +1093,7 @@ class SubstrateTab(object):
                 # cbar = self.fig.colorbar(substrate_plot, ax=main_ax)
                 cbar = self.fig.colorbar(substrate_plot)
                 cbar.ax.tick_params(labelsize=self.fontsize)
+                cbar.set_label('mmHg',size=self.fontsize)
                 # cbar = main_ax.colorbar(my_plot)
                 # cbar.ax.tick_params(labelsize=self.fontsize)
             # axes_min = 0
@@ -1117,6 +1126,7 @@ class SubstrateTab(object):
             self.svg_frame = frame
             # print('plot_svg with frame=',self.svg_frame)
             self.plot_svg(self.svg_frame)
+
 
         # plt.subplot(grid[2, 0])
         # oxy_ax = self.fig.add_subplot(grid[2:, 0:1])
