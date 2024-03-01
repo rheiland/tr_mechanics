@@ -156,10 +156,14 @@ install:
 
 distclean: clean
 	rm -f ../bin/$(PROGRAM_NAME)
+    rm -f ../bin/$(PROGRAM_NAME).exe
+    rm -rf ../bin/__pycache__
+    rm -rf ../.ipynb_checkpoints
 
 clean:
 	rm -f *.o
 	rm -f $(PROGRAM_NAME)
+    rm -f $(PROGRAM_NAME).exe
 	
 data-cleanup:
 	rm -f *.mat
@@ -189,3 +193,10 @@ unzip:
 untar: 
 	cp ./archives/latest.tar .
 	tar -xzf latest.tar
+
+animation:
+	cd output;magick mogrify -format jpg snapshot*.svg;magick snapshot*.jpg animation.gif
+    
+make notepad_edit:
+	notepad++ main.cpp ./config/PhysiCell_settings.xml ./custom_modules/custom.h ./custom_modules/custom.cpp
+    
