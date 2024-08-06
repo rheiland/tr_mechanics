@@ -938,6 +938,8 @@ class SubstrateTab(object):
 #        axx.set_title(title_str)
         # plt.title(title_str)
 
+        plt.show()
+
     #---------------------------------------------------------------------------
     # assume "frame" is cell frame #, unless Cells is togggled off, then it's the substrate frame #
     # def plot_substrate(self, frame, grid):
