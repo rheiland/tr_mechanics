@@ -786,8 +786,11 @@ class SubstrateTab(object):
                     rgb = list(map(int, s[4:-1].split(",")))  
                     rgb[:] = [x / 255. for x in rgb]
                 else:     # otherwise, must be a color name
+                    # print("\n----circle: s=",s)
                     rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
                     rgb = [x for x in rgb_tuple]
+                    rgb += [1]   # append 4th component (alpha)
+                    # print("   --> rgb=",rgb)
 
                 # test for bogus x,y locations (rwh TODO: use max of domain?)
                 too_large_val = 10000.
@@ -819,12 +822,12 @@ class SubstrateTab(object):
 #####################################
 
 
-        for distance in Distances:
+        for distance in Distances:  # rwh: not sure who added this, but it's buggy
             # print(distance.attrib)
-            first_circle_unique = True;
-            xval = float(distance.attrib['cx']);
+            first_circle_unique = True
+            xval = float(distance.attrib['cx'])
             xval = xval/self.x_range * self.x_range + self.xmin
-            s = distance.attrib['fill'];
+            s = distance.attrib['fill']
             if (s[0:4] == "rgba"):  # if an rgba string, e.g. "rgba(0,0,1,0.1)" 
                 rgb = list(map(float, s[5:-1].split(",")))
                 rgb[:] = [x for x in rgb]
@@ -834,6 +837,7 @@ class SubstrateTab(object):
             else:
                 rgb_tuple = mplc.to_rgb(mplc.cnames[s])  # a tuple
                 rgb = [x for x in rgb_tuple]
+                rgb += [1]   # append 4th component (alpha)
         
 			# # test for bogus x,y locations (rwh TODO: use max of domain?)
 			# too_large_val = 10000.
@@ -857,6 +861,7 @@ class SubstrateTab(object):
         xvals = np.array(xlist)
         yvals = np.array(ylist)
         rvals = np.array(rlist)
+        # print("rgb_list=",rgb_list)
         rgbs = np.array(rgb_list)
         self.title_str += " (" + str(num_cells) + " agents)"
             # title_str = " (" + str(num_cells) + " agents)"
