@@ -399,6 +399,11 @@ class SubstrateTab(object):
             )
             self.download_svg_button.on_click(self.download_svg_cb)
 
+            download_row = HBox([self.download_button.w, self.download_svg_button.w])
+            # box_layout = Layout(border='0px solid')
+            controls_box = VBox([row1, row2])  # ,width='50%', layout=box_layout)
+            self.tab = VBox([controls_box, self.i_plot, download_row])
+
         elif hublib_flag:
             self.download_button = Download('mcds.zip', style='warning', icon='cloud-download', 
                                                 tooltip='Download data', cb=self.download_cb)
