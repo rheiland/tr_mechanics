@@ -385,14 +385,14 @@ class SubstrateTab(object):
         row2 = HBox( [row2a, Label('.....'), row2b])
 
         if self.colab_flag:
-            self.download_button = widgets.Button(
+            self.download_button = Button(
                 description='Download mcds.zip',
                 button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
                 tooltip='Download data',
             )
             self.download_button.on_click(self.download_cb)
 
-            self.download_svg_button = widgets.Button(
+            self.download_svg_button = Button(
                 description='Download svg.zip',
                 button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
                 tooltip='Download data',
