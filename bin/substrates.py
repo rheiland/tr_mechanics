@@ -31,6 +31,11 @@ if platform.system() != 'Windows':
 else:
     hublib_flag = False
 
+try:
+    from google.colab import files
+except:
+    pass
+
 #warnings.warn(message, mplDeprecation, stacklevel=1)
 warnings.filterwarnings("ignore")
 
@@ -111,6 +116,9 @@ class SubstrateTab(object):
         self.i_plot.layout.height = svg_plot_size
 
         self.fontsize = 20
+
+        self.colab_flag = True
+        # self.colab_flag = False
 
             # description='# cell frames',
         self.max_frames = BoundedIntText(
@@ -376,7 +384,22 @@ class SubstrateTab(object):
         # row2 = HBox( [row2a, self.substrates_toggle, self.grid_toggle])
         row2 = HBox( [row2a, Label('.....'), row2b])
 
-        if (hublib_flag):
+        if self.colab_flag:
+            self.download_button = widgets.Button(
+                description='Download mcds.zip',
+                button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
+                tooltip='Download data',
+            )
+            self.download_button.on_click(self.download_cb)
+
+            self.download_svg_button = widgets.Button(
+                description='Download svg.zip',
+                button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
+                tooltip='Download data',
+            )
+            self.download_svg_button.on_click(self.download_svg_cb)
+
+        elif hublib_flag:
             self.download_button = Download('mcds.zip', style='warning', icon='cloud-download', 
                                                 tooltip='Download data', cb=self.download_cb)
 
@@ -551,6 +574,9 @@ class SubstrateTab(object):
             for f in glob.glob(file_str):
                 myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
 
+        if self.colab_flag:
+            files.download('svg.zip')
+
     def download_cb(self):
         file_xml = os.path.join(self.output_dir, '*.xml')
         file_mat = os.path.join(self.output_dir, '*.mat')
@@ -560,6 +586,9 @@ class SubstrateTab(object):
                 myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
             for f in glob.glob(file_mat):
                 myzip.write(f, os.path.basename(f))
+
+        if self.colab_flag:
+            files.download('mcds.zip')
 
     def update_max_frames(self,_b):
         self.i_plot.children[0].max = self.max_frames.value
