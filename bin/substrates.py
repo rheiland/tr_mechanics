@@ -390,14 +390,14 @@ class SubstrateTab(object):
                 button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
                 tooltip='Download data',
             )
-            self.download_button.on_click(self.download_cb)
+            self.download_button.on_click(self.download_local_cb)
 
             self.download_svg_button = Button(
                 description='Download svg.zip',
                 button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
                 tooltip='Download data',
             )
-            self.download_svg_button.on_click(self.download_svg_cb)
+            self.download_svg_button.on_click(self.download_local_svg_cb)
 
             download_row = HBox([self.download_button, self.download_svg_button])
             # box_layout = Layout(border='0px solid')
@@ -571,6 +571,29 @@ class SubstrateTab(object):
             if len(substrate_files) > 0:
                 last_file = substrate_files[-1]
                 self.max_frames.value = int(last_file[-12:-4])
+
+    def download_local_svg_cb(self,s):
+        file_str = os.path.join(self.output_dir, '*.svg')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('svg.zip', 'w') as myzip:
+            for f in glob.glob(file_str):
+                myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
+
+        if self.colab_flag:
+            files.download('svg.zip')
+
+    def download_local_cb(self,s):
+        file_xml = os.path.join(self.output_dir, '*.xml')
+        file_mat = os.path.join(self.output_dir, '*.mat')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('mcds.zip', 'w') as myzip:
+            for f in glob.glob(file_xml):
+                myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
+            for f in glob.glob(file_mat):
+                myzip.write(f, os.path.basename(f))
+
+        if self.colab_flag:
+            files.download('mcds.zip')
 
     def download_svg_cb(self):
         file_str = os.path.join(self.output_dir, '*.svg')
