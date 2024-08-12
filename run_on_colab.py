@@ -24,8 +24,6 @@ def go(s_home):
 
     # relaod module binary and fire up gui
     os.chdir(s_wd)
-    if 'tr_mechanics' in set(sys.modules.keys()):
-        importlib.reload(tr_mechanics)
-    else:
-        import tr_mechanics
+    import tr_mechanics
+    importlib.reload(tr_mechanics)
     tr_mechanics.gui
