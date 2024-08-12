@@ -22,8 +22,10 @@ def go(s_home):
         os.chmod(s_exe, stat.S_IXOTH)
         sys.path.insert(0, s_bin)
 
-    # relaod module binary and fire up gui
+    # load module binary and return gui
     os.chdir(s_wd)
     import tr_mechanics
     importlib.reload(tr_mechanics)
-    tr_mechanics.gui
+
+    # output
+    return tr_mechanics.gui
