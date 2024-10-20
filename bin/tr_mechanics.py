@@ -368,7 +368,7 @@ else:
     # if False:
         run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
-                            cachename=None,
+                            cachename='.',
                             showcache=False,
                             outcb=outcb)  
     else:
