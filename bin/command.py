@@ -93,7 +93,8 @@ class RunCommand(object):
             self.cachetabdir = os.path.join(self.cachedir, '.cache_table')
             if not os.path.isdir(self.cachedir):
                 os.makedirs(self.cachedir)
-            memory = Memory(cachedir=self.cachetabdir, verbose=0)
+            # memory = Memory(cachedir=self.cachetabdir, verbose=0)
+            memory = Memory( verbose=0)
 
             @memory.cache
             def make_rname(*args):
