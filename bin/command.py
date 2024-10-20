@@ -77,22 +77,23 @@ class RunCommand(object):
         if start_func is None:
             print("start_func is required", file=sys.stderr)
 
-        # if cachename:
-        #     # set up cache
-        #     if cachedir is None:
-        #         try:
-        #             cachedir = os.environ['CACHEDIR']
-        #         except:
-        #             print("ERROR: cachename is set, but CACHEDIR is not", file=sys.stderr)
-        #             print("Set the environment variable 'CACHEDIR' to the directory", file=sys.stderr)
-        #             print("where you want the cache to be located.", file=sys.stderr)
-        #             sys.exit(1)
+        if cachename:
+            # set up cache
+            if cachedir is None:
+                try:
+                    # cachedir = os.environ['CACHEDIR']
+                    cachedir = '.'
+                except:
+                    print("ERROR: cachename is set, but CACHEDIR is not", file=sys.stderr)
+                    print("Set the environment variable 'CACHEDIR' to the directory", file=sys.stderr)
+                    print("where you want the cache to be located.", file=sys.stderr)
+                    # sys.exit(1)
 
-        #     self.cachedir = os.path.join(os.path.expanduser(cachedir), cachename)
-        #     self.cachetabdir = os.path.join(self.cachedir, '.cache_table')
-        #     if not os.path.isdir(self.cachedir):
-        #         os.makedirs(self.cachedir)
-        #     memory = Memory(cachedir=self.cachetabdir, verbose=0)
+            self.cachedir = os.path.join(os.path.expanduser(cachedir), cachename)
+            self.cachetabdir = os.path.join(self.cachedir, '.cache_table')
+            if not os.path.isdir(self.cachedir):
+                os.makedirs(self.cachedir)
+            memory = Memory(cachedir=self.cachetabdir, verbose=0)
 
             @memory.cache
             def make_rname(*args):
