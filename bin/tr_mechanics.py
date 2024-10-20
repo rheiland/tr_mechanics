@@ -218,6 +218,10 @@ def fill_gui_params(config_file):
     user_tab.fill_gui(xml_root)
 
 
+def run_done_func_colab(s, rdir):
+    sub.update('.')
+    return
+
 def run_done_func(s, rdir):
     # with debug_view:
     #     print('run_done_func: results in', rdir)
@@ -311,7 +315,7 @@ def run_sim_func(s):
 def outcb(s):
     # This is called when new output is received.
     # Only update file list for certain messages: 
-    # print("outcb(): s=",s)
+    print("outcb(): s=",s)
     if "simulat" in s:    # "current simulated time: 60 min (max: 14400 min)"
         # New Data. update visualizations
         # svg.update('')
@@ -367,7 +371,7 @@ else:
     if (hublib_flag):
     # if False:
         run_button = RunCommand(start_func=run_sim_func,
-                            done_func=run_done_func,
+                            done_func=run_done_func_colab,
                             cachename='.',
                             showcache=False,
                             outcb=outcb)  
