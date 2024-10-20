@@ -18,15 +18,24 @@ import subprocess
 from debug import debug_view
 
 hublib_flag = True
-if platform.system() != 'Windows':
-    try:
-#        print("Trying to import hublib.ui")
-        from hublib.ui import RunCommand, Submit
-        # from hublib2.ui import RunCommand, Submit
-    except:
-        hublib_flag = False
-else:
+# for Colab
+try:
+       print("Trying to import hublib.ui")
+    from hublib.ui import RunCommand, Submit
+    # from hublib2.ui import RunCommand, Submit
+except:
+    print("failed to import hublib.ui")
     hublib_flag = False
+
+# if platform.system() != 'Windows':
+#     try:
+# #        print("Trying to import hublib.ui")
+#         from hublib.ui import RunCommand, Submit
+#         # from hublib2.ui import RunCommand, Submit
+#     except:
+#         hublib_flag = False
+# else:
+#     hublib_flag = False
 
 
 # join_our_list = "(Join/ask questions at https://groups.google.com/forum/#!forum/physicell-users)\n"
@@ -353,8 +362,8 @@ if nanoHUB_flag:
                         showcache=False,
                         outcb=outcb)
 else:
-    # if (hublib_flag):
-    if False:
+    if (hublib_flag):
+    # if False:
         run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
                             cachename=None,
