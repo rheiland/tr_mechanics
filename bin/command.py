@@ -405,13 +405,15 @@ def poll_thread(cmd, self):
 
     # copy files to cache dir and return full pathname for it
     if self.cachename:
-        rdir = self.copy_files(start_time, elapsed_time, errNum)
+        # rdir = self.copy_files(start_time, elapsed_time, errNum)  # rwh
+        pass
     else:
         rdir = self.runname
 
     if self.done_func and errNum == 0:
         if self.cachename:
-            self.done_func(self, rdir)
+            # self.done_func(self, rdir)   # rwh
+            self.done_func(self)
         else:
             self.done_func(self)
 
