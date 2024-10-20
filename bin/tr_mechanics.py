@@ -17,15 +17,17 @@ import platform
 import subprocess
 from debug import debug_view
 
+from command import RunCommand
+
 hublib_flag = True
 # for Colab
-try:
-       print("Trying to import hublib.ui")
-    from hublib.ui import RunCommand, Submit
-    # from hublib2.ui import RunCommand, Submit
-except:
-    print("failed to import hublib.ui")
-    hublib_flag = False
+# try:
+#        print("Trying to import hublib.ui")
+#     from hublib.ui import RunCommand, Submit
+#     # from hublib2.ui import RunCommand, Submit
+# except:
+#     print("failed to import hublib.ui")
+#     hublib_flag = False
 
 # if platform.system() != 'Windows':
 #     try:
